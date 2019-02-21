@@ -2,6 +2,6 @@
 <resources>
     <dimen name="buttonSize">70dp</dimen>
     <dimen name="cardWidth">60dp</dimen>
-    <dimen name="cardHeight">105dp</dimen>
+    <dimen name="cardHeight">100dp</dimen>
     <dimen name="buttonText">20sp</dimen>
 </resources>
