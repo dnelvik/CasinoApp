@@ -2,16 +2,12 @@ package com.example.dnelv.casino;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Spilleautomat extends AppCompatActivity {
     private Button spinButton;
@@ -24,7 +20,9 @@ public class Spilleautomat extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spilleautomat);
+        setContentView(R.layout.activity_spilleautomat);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);//hide the title
+        getSupportActionBar().hide(); //hide the title bar
         balance = 10000;
         balanceText = findViewById(R.id.saldo);
         balanceText.setText("Balance: " + balance);
