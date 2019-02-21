@@ -20,9 +20,9 @@ public class Spilleautomat extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spilleautomat);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//hide the title
         getSupportActionBar().hide(); //hide the title bar
+        setContentView(R.layout.activity_spilleautomat);
         balance = 10000;
         balanceText = findViewById(R.id.saldo);
         balanceText.setText("Balance: " + balance);
