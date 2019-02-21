@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="buttonSize">70dp</dimen>
+    <dimen name="cardWidth">70dp</dimen>
+    <dimen name="cardHeight">120dp</dimen>
+    <dimen name="buttonText">12sp</dimen>
+</resources>
