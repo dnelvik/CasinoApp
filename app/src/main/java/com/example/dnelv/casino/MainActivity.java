@@ -19,5 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void spilleAutomat(View view) {
+        Intent intent = new Intent(getBaseContext(), Spilleautomat.class);
+        this.startActivity(intent);
     }
 }
