@@ -86,7 +86,7 @@ public class Blackjack extends AppCompatActivity {
         dealer = new Spiller();
 
         // Setter regelvariabler
-        penger = 5000;
+        penger = MainActivity.getSaldo();
         slutt = true;
         bet = 0;
         isBetting = true;
@@ -204,6 +204,7 @@ public class Blackjack extends AppCompatActivity {
         saldo.setText("Saldo: " + penger + " kr");
         dealerInfo.setText("Poeng: " + dealer.sjekkPoeng());
         updateButtons();
+        MainActivity.setSaldo(penger);
     }
 
     //Kjøres når en av bet knappene trykkes
