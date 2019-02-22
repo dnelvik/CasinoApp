@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
+    private static int saldo = 5000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +58,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void spilleAutomat(View view) {
         Intent intent = new Intent(getBaseContext(), Spilleautomat.class);
         this.startActivity(intent);
+    }
+
+    public static void setSaldo(int nySaldo){
+        saldo = nySaldo;
+    }
+
+    public static int getSaldo(){
+        return saldo;
     }
 
     @Override
