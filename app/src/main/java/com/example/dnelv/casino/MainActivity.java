@@ -12,10 +12,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-
+    public static TextView textSaldo;
     private static int saldo = 5000;
 
     @Override
@@ -30,19 +32,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(savedInstanceState ==  null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+        textSaldo = headerView.findViewById(R.id.nav_header_saldo);
+        textSaldo.setText("" + saldo);
+
     }
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -60,17 +67,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.startActivity(intent);
     }
 
-    public static void setSaldo(int nySaldo){
+    public static void setSaldo(int nySaldo) {
         saldo = nySaldo;
     }
 
-    public static int getSaldo(){
+    public static int getSaldo() {
         return saldo;
     }
 
+    public static void updateSaldo(int newSaldo) {
+        saldo = newSaldo;
+        textSaldo.setText(""+saldo);
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                 break;
