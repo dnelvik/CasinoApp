@@ -23,7 +23,7 @@ public class Spilleautomat extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);//hide the title
         getSupportActionBar().hide(); //hide the title bar
         setContentView(R.layout.activity_spilleautomat);
-        balance = 10000;
+        balance = MainActivity.getSaldo();
         balanceText = findViewById(R.id.saldo);
         balanceText.setText("Balance: " + balance);
 
@@ -42,7 +42,7 @@ public class Spilleautomat extends AppCompatActivity {
         r100 = findViewById(R.id.bet100);
 
     }
-
+    //Setter igang maskinen og trekker fra innsats
     public void spin(View view) {
         if(r10.isChecked()){
             balance-=10;
@@ -62,6 +62,7 @@ public class Spilleautomat extends AppCompatActivity {
     public static void showResult(int reward){
         rewardText.setText(""+reward);
         balance+=reward;
+        MainActivity.setSaldo(balance);
         balanceText.setText("Balance: "+balance);
     }
 }
