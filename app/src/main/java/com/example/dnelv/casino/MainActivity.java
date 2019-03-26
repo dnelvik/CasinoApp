@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     public static TextView textSaldo;
     private static int saldo = 5000;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-        SharedPreferences prefs = getSharedPreferences("MyPrefsName", MODE_PRIVATE);
+        prefs = getSharedPreferences("MyPrefsName", MODE_PRIVATE);
         if (prefs.getString("Username", null) == null){
             Intent loggInnIntent = new Intent(this, LoginActivity.class);
             startActivity(loggInnIntent);
@@ -106,5 +107,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void Logout(View view) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("Username");
+        editor.apply();
+        Intent newIntent = new Intent(this, MainActivity.class);
+        startActivity(newIntent);
     }
 }
