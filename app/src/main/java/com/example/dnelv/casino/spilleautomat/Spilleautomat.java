@@ -1,4 +1,4 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.spilleautomat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.example.dnelv.casino.MainActivity;
+import com.example.dnelv.casino.R;
 
 public class Spilleautomat extends AppCompatActivity {
     private Button spinButton;

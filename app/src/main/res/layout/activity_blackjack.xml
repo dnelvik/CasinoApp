@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:background="@drawable/bakgrunnbj"
     android:paddingTop="25dp"
-    tools:context=".Blackjack">
+    tools:context=".blackjack.Blackjack">
 
 
     <TextView

@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Blackjack"
+            android:name=".blackjack.Blackjack"
             android:screenOrientation="landscape"></activity>
         <activity
             android:name=".MainActivity"
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Spilleautomat"
+            android:name=".spilleautomat.Spilleautomat"
             android:screenOrientation="landscape"></activity>
 
         <meta-data

@@ -1,4 +1,4 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.home;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.dnelv.casino.MainActivity;
+import com.example.dnelv.casino.R;
 
 import org.w3c.dom.Text;
 

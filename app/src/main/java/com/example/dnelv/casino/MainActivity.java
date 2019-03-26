@@ -12,8 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.dnelv.casino.blackjack.Blackjack;
+import com.example.dnelv.casino.home.HomeFragment;
+import com.example.dnelv.casino.home.MyProfileFragment;
+import com.example.dnelv.casino.home.SettingsFragment;
+import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;

@@ -1,4 +1,4 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.blackjack;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.dnelv.casino.MainActivity;
+import com.example.dnelv.casino.R;
 
 import java.util.ArrayList;
 

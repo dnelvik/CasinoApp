@@ -1,4 +1,4 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.blackjack;
 
 import android.util.Log;
 

@@ -1,7 +1,9 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.spilleautomat;
 
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.example.dnelv.casino.R;
 
 import java.util.Random;
 import java.util.Timer;

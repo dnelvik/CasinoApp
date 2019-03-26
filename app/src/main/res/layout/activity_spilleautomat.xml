@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context=".Spilleautomat">
+    tools:context=".spilleautomat.Spilleautomat">
 
     <LinearLayout
         android:id="@+id/slotBoks"

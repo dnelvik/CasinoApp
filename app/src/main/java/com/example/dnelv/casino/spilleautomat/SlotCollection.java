@@ -1,4 +1,4 @@
-package com.example.dnelv.casino;
+package com.example.dnelv.casino.spilleautomat;
 
 import android.os.Looper;
 import android.widget.ImageView;
