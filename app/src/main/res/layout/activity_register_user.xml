@@ -7,59 +7,58 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:weightSum="1"
-    tools:context=".login.LoginActivity">
+    tools:context=".login.RegisterUserActivity">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/etUserLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".1"
-        android:layout_marginBottom="2dp">
+        android:layout_marginBottom="2dp"
+        android:layout_weight=".1">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/etUserLogin"
+            android:id="@+id/etUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Brukernavn"
-            />
+            android:hint="Brukernavn" />
     </android.support.design.widget.TextInputLayout>
 
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/etPasswordLayout"
+        android:id="@+id/etPasswordLayout1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight=".1"
         app:passwordToggleEnabled="true">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/etPasswordLogin"
+            android:id="@+id/etPassword1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Passord"
-            android:inputType="textPassword"
-            />
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/etPasswordLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".1"
+        app:passwordToggleEnabled="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/etPassword2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Gjenta Passord"
+            android:inputType="textPassword" />
+    </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/bLogin"
+        android:id="@+id/bRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logg inn"
-        android:onClick="logIn"/>
-
-    <TextView
-        android:id="@+id/registerLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="sendToRegister"
-        android:text="Registrer her" />
+        android:onClick="registerUser"
+        android:text="Registrer" />
 
 </LinearLayout>
-
-    <!--
-        Fant textinputlayout kode her:
-        https://stackoverflow.com/questions/3685790/how-to-switch-between-hide-and-view-password
-    -->
