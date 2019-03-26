@@ -24,7 +24,7 @@ import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    public static TextView textSaldo;
+    public static TextView textSaldo, navUsername;
     private static int saldo = 5000;
     private SharedPreferences prefs;
 
@@ -43,11 +43,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(loggInnIntent);
         }
 
-        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         View headerView = navigationView.getHeaderView(0);
+
+        textSaldo = headerView.findViewById(R.id.nav_header_saldo);
+        navUsername = headerView.findViewById(R.id.nav_header_username);
+        navUsername.setText(prefs.getString("Username", null));
+        textSaldo.setText("Saldo: " + saldo + " kr");
+
+        drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -57,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-        textSaldo = headerView.findViewById(R.id.nav_header_saldo);
-        textSaldo.setText("" + saldo);
+
     }
 
     @Override
