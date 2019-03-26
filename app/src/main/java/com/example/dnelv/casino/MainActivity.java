@@ -1,6 +1,7 @@
 package com.example.dnelv.casino;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import com.example.dnelv.casino.blackjack.Blackjack;
 import com.example.dnelv.casino.home.HomeFragment;
 import com.example.dnelv.casino.home.MyProfileFragment;
 import com.example.dnelv.casino.home.SettingsFragment;
+import com.example.dnelv.casino.login.LoginActivity;
 import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        SharedPreferences prefs = getSharedPreferences("MyPrefsName", MODE_PRIVATE);
+        if (prefs.getString("Username", null) == null){
+            Intent loggInnIntent = new Intent(this, LoginActivity.class);
+            startActivity(loggInnIntent);
+        }
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -49,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         textSaldo = headerView.findViewById(R.id.nav_header_saldo);
         textSaldo.setText("" + saldo);
-
     }
 
     @Override
