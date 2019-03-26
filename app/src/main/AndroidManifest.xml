@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dnelv.casino">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,9 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".login.RegisterUserActivity"></activity>
+        <activity android:name=".login.LoginActivity" />
         <activity
             android:name=".blackjack.Blackjack"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -23,7 +27,7 @@
         </activity>
         <activity
             android:name=".spilleautomat.Spilleautomat"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
 
         <meta-data
             android:name="preloaded_fonts"
