@@ -108,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
+            case R.id.nav_highscore:
+                Intent highscoreIntent = new Intent(this, HighscoreActivity.class);
+                startActivity(highscoreIntent);
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
