@@ -24,8 +24,9 @@ import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
-    public static TextView textSaldo;
+    public static TextView textSaldo, navUsername;
     private static int saldo = 5000;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,17 +37,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 
-        SharedPreferences prefs = getSharedPreferences("MyPrefsName", MODE_PRIVATE);
+        prefs = getSharedPreferences("MyPrefsName", MODE_PRIVATE);
         if (prefs.getString("Username", null) == null){
             Intent loggInnIntent = new Intent(this, LoginActivity.class);
             startActivity(loggInnIntent);
         }
 
-        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
         View headerView = navigationView.getHeaderView(0);
+
+        textSaldo = headerView.findViewById(R.id.nav_header_saldo);
+        navUsername = headerView.findViewById(R.id.nav_header_username);
+        navUsername.setText(prefs.getString("Username", null));
+        textSaldo.setText("Saldo: " + saldo + " kr");
+
+        drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -56,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-        textSaldo = headerView.findViewById(R.id.nav_header_saldo);
-        textSaldo.setText("" + saldo);
+
     }
 
     @Override
@@ -103,8 +108,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_settings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
+            case R.id.nav_highscore:
+                Intent highscoreIntent = new Intent(this, HighscoreActivity.class);
+                startActivity(highscoreIntent);
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void Logout(View view) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("Username");
+        editor.apply();
+        Intent newIntent = new Intent(this, MainActivity.class);
+        startActivity(newIntent);
     }
 }
