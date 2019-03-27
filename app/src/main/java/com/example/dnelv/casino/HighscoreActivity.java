@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class HighscoreActivity extends AppCompatActivity {
     ListView highscoreListe;
     private String game;
     private LinearLayout layout;
+    Button spilleAutomat, blackjack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,8 @@ public class HighscoreActivity extends AppCompatActivity {
 
         layout = findViewById(R.id.mainLayout);
         highscoreListe = findViewById(R.id.highscoreListID);
-        game = "Blackjack";
-        getHighscores();
-
+        spilleAutomat = findViewById(R.id.spilleautomat_highscore_button);
+        blackjack = findViewById(R.id.blackjack_highscore_button);
     }
 
     private void defineList(final String[] userTabell, final int[] scoreTabell){
@@ -69,6 +70,7 @@ public class HighscoreActivity extends AppCompatActivity {
                 try {
                     String[] userTabell;
                     int[] scoreTabell;
+                    Log.e("Response", response);
 
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
@@ -90,7 +92,7 @@ public class HighscoreActivity extends AppCompatActivity {
                 }
             }
         };
-        HighscoreRequest highscoreRequest = new HighscoreRequest("blackjack", responseListener, null);
+        HighscoreRequest highscoreRequest = new HighscoreRequest(game, responseListener, null);
         RequestQueue queue = Volley.newRequestQueue(HighscoreActivity.this);
         queue.add(highscoreRequest);
     }
@@ -102,9 +104,8 @@ public class HighscoreActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    public void VisSpilleAutomatHighscores(View view) {
-    }
-
-    public void VisBlackjackHighscores(View view) {
+    public void byttHighscores(View view) {
+        game = view.getTag().toString();
+        getHighscores();
     }
 }
