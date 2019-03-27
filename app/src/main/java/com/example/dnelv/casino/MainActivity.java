@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     public void blackJack(View view) {
         Intent intent = new Intent(getBaseContext(), Blackjack.class);
         this.startActivity(intent);
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public static void updateSaldo() {
-        textSaldo.setText(""+prefs.getInt("Saldo", 0));
+        textSaldo.setText("Saldo: "+prefs.getInt("Saldo", 0)+" kr");
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
