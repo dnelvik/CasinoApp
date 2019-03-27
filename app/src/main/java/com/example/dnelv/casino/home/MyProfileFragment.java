@@ -58,6 +58,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                         SharedPreferences.Editor editor = getActivity().getSharedPreferences("MyPrefsName", Context.MODE_PRIVATE).edit();
                         editor.putInt("Saldo", saldo);
                         editor.apply();
+                        MainActivity.updateSaldo();
                         Toast.makeText(getActivity(), "Takk for ditt inskudd på: " + sum+"kr", Toast.LENGTH_SHORT).show();
                     } else {
                         String error = jsonResponse.getString("error");
@@ -74,7 +75,6 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         SaldoRequest saldoRequest = new SaldoRequest(userId, sum, responseListener, null);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(saldoRequest);
-        MainActivity.updateSaldo();
     }
 
     @Override
