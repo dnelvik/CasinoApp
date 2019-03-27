@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static void updateSaldo() {
         textSaldo.setText("Saldo: "+prefs.getInt("Saldo", 0)+" kr");
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
