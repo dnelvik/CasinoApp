@@ -26,6 +26,7 @@ import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     public static TextView textSaldo, navUsername;
+
     private static SharedPreferences prefs;
     private static int saldo;
 
@@ -74,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+    public static SharedPreferences getPrefs() {
+        return prefs;
     }
 
     public void blackJack(View view) {

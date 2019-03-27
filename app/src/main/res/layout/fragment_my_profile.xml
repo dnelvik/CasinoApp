@@ -21,6 +21,8 @@
         android:id="@+id/adding"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
+        android:inputType="numberPassword|textVisiblePassword"
+        android:digits="0123456789"
         />
     <Button
         android:id="@+id/addButton"

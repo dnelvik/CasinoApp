@@ -20,17 +20,10 @@ public class SlotCollection {
         for (Slot slot: slots) {
             slot.start();
         }
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                result();
-            }
-        };
-        Timer timer = new Timer();
-        timer.schedule(task,3100);
+
     }
 
-    private void result() {
+    public int result() {
         profit = 0;
         if(slots[0].symbol == slots[1].symbol && slots[1].symbol == slots[2].symbol){
             profit = threeOfAKind(slots[0].symbol);
@@ -39,11 +32,7 @@ public class SlotCollection {
         } else if(slots[2].symbol == 7){
             profit = stake*2;
         }
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            public void run() {
-                Spilleautomat.showResult(profit);
-            }
-        });
+        return profit;
     }
     private int threeOfAKind(int symbol){
         int x = 0;
