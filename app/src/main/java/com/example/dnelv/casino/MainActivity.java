@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -25,8 +26,8 @@ import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
     public static TextView textSaldo, navUsername;
-    private static int saldo = 5000;
-    private SharedPreferences prefs;
+    private static SharedPreferences prefs;
+    private static int saldo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textSaldo = headerView.findViewById(R.id.nav_header_saldo);
         navUsername = headerView.findViewById(R.id.nav_header_username);
         navUsername.setText(prefs.getString("Username", null));
+        saldo = prefs.getInt("Saldo", 0);
         textSaldo.setText("Saldo: " + saldo + " kr");
 
         drawer = findViewById(R.id.drawer_layout);
@@ -84,17 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.startActivity(intent);
     }
 
-    public static void setSaldo(int nySaldo) {
-        saldo = nySaldo;
-    }
-
-    public static int getSaldo() {
-        return saldo;
-    }
-
-    public static void updateSaldo(int newSaldo) {
-        saldo = newSaldo;
-        textSaldo.setText(""+saldo);
+    public static void updateSaldo() {
+        textSaldo.setText(""+prefs.getInt("Saldo", 0));
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -122,5 +115,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         editor.apply();
         Intent newIntent = new Intent(this, MainActivity.class);
         startActivity(newIntent);
+    }
+    public static int getSaldo() {
+        return prefs.getInt("Saldo", 0);
+    }
+
+    public static void setSaldo(int saldo) {
+        MainActivity.saldo = saldo;
     }
 }

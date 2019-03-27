@@ -64,9 +64,11 @@ public class LoginActivity extends AppCompatActivity {
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         int userID = jsonResponse.getInt("userID");
+                        int saldo = jsonResponse.getInt("saldo");
                         SharedPreferences.Editor editor = getSharedPreferences("MyPrefsName", MODE_PRIVATE).edit();
                         editor.putString("Username", username);
                         editor.putInt("UserID", userID);
+                        editor.putInt("Saldo", saldo);
                         editor.apply();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         LoginActivity.this.startActivity(intent);
