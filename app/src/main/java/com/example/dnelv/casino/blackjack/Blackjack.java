@@ -1,8 +1,11 @@
 package com.example.dnelv.casino.blackjack;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -10,9 +13,18 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.dnelv.casino.InsertHighscoreRequest;
 import com.example.dnelv.casino.MainActivity;
 import com.example.dnelv.casino.R;
+import com.example.dnelv.casino.SaldoRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -24,7 +36,7 @@ public class Blackjack extends AppCompatActivity {
 
     // Referanser til GUI objekter
     private LinearLayout spillerKort, dealerKort;
-    private TextView saldo, log, spillerInfo, dealerInfo;
+    private TextView saldoText, log, spillerInfo, dealerInfo;
     private ImageButton hit, stand, start, bet5, bet25, bet100, doubledown;
 
     //Deklarerer kortstokken og spillere
@@ -65,7 +77,7 @@ public class Blackjack extends AppCompatActivity {
         dealerInfo = (TextView) findViewById(R.id.dealerInfo);
         spillerKort = (LinearLayout) findViewById(R.id.kort2);
         dealerKort = (LinearLayout) findViewById(R.id.kort1);
-        saldo = (TextView) findViewById(R.id.saldo);
+        saldoText = (TextView) findViewById(R.id.saldo);
         log = (TextView) findViewById(R.id.log);
         log.setMovementMethod(new ScrollingMovementMethod());
 
@@ -78,7 +90,7 @@ public class Blackjack extends AppCompatActivity {
 
     }
 
-    private void startSpill(){
+    private void startSpill() {
         //Resetter
         removeViews();
         dealerInfo.setText("Poeng: ");
@@ -89,11 +101,11 @@ public class Blackjack extends AppCompatActivity {
         dealer = new Spiller();
 
         // Setter regelvariabler
-        penger = MainActivity.getSaldo();
+        penger = MainActivity.getPrefs().getInt("Saldo", 0);
         slutt = true;
         bet = 0;
         isBetting = true;
-        saldo.setText("Saldo: " + penger + " kr");
+        saldoText.setText("Saldo: " + penger + " kr");
 
         //Dealer ut kort
         deal(dealer, true);
@@ -105,7 +117,7 @@ public class Blackjack extends AppCompatActivity {
         updateButtons();
     }
 
-    private void deal(Spiller spilleren, boolean dealer){
+    private void deal(Spiller spilleren, boolean dealer) {
         spilleren.hånd.add(kortstokk.deal()); // Deler ut et kort
         if (!isBetting)
             cardGraphics(spilleren.hånd.get(spilleren.hånd.size() - 1).getNavn(), dealer);
@@ -114,7 +126,7 @@ public class Blackjack extends AppCompatActivity {
     }
 
     // Legger til kort i grafikken
-    private void cardGraphics(String kortNavn, boolean dealer){
+    private void cardGraphics(String kortNavn, boolean dealer) {
         bilder.add(new ImageView(this)); //legger et imageview til i en arraylist
         int siste = bilder.size() - 1;  // Lagrer verdi for siste plass i listen
         int resId = this.getResources().getIdentifier(kortNavn, "drawable", this.getPackageName()); //ID for bildet
@@ -139,10 +151,10 @@ public class Blackjack extends AppCompatActivity {
     }
 
     // Kjøres når stand knappen trykkes
-    public void stand(View view){
-        if (!slutt){
+    public void stand(View view) {
+        if (!slutt) {
             dealeren(false);
-            slutt=true;
+            slutt = true;
             if (dealer.sjekkPoeng() == spiller.sjekkPoeng())
                 end(2, false);
             else if (dealer.sjekkPoeng() > 21 || dealer.sjekkPoeng() < spiller.sjekkPoeng())
@@ -155,7 +167,7 @@ public class Blackjack extends AppCompatActivity {
     // Kjøres når startknappen trykkes
     public void flip(View view) {
         if (isBetting == false) return;
-        if (bet == 0){
+        if (bet == 0) {
             log.append("\n You must place a bet");
             return;
         }
@@ -165,7 +177,7 @@ public class Blackjack extends AppCompatActivity {
 
         // Snur kortene
         removeViews();
-        for (int i=0; i<2; i++){
+        for (int i = 0; i < 2; i++) {
             if (i == 0)
                 cardGraphics("back", true);
             else
@@ -177,8 +189,7 @@ public class Blackjack extends AppCompatActivity {
         if (spiller.sjekkPoeng() == 21 && dealer.sjekkPoeng() != 21) {
             end(0, true);
             dealeren(true);
-        }
-        else if (spiller.sjekkPoeng() == 21 && dealer.sjekkPoeng() == 21) {
+        } else if (spiller.sjekkPoeng() == 21 && dealer.sjekkPoeng() == 21) {
             end(2, false);
             dealeren(true);
         }
@@ -186,60 +197,90 @@ public class Blackjack extends AppCompatActivity {
     }
 
     // Kjøres ved spill slutt
-    private void end(int vinn, boolean blackjack){
+    private void end(int vinn, boolean blackjack) {
         slutt = true;
-        if (vinn == 0){
-            if (!blackjack){    // Vinn uten blackjack
-                penger += bet*2;
+        int gevinst = 0;
+        if (vinn == 0) {
+            if (!blackjack) {    // Vinn uten blackjack
+                gevinst = bet * 2;
                 log.append("\n You won!");
-            }
-            else {              // Vinn med blackjack
+            } else {              // Vinn med blackjack
                 log.append("\n BLACKJACK!");
-                bet = (bet*2) + (bet/2);
-                penger += bet;
+                gevinst = (bet * 2) + (bet / 2);
+                updateSaldo((bet * 2) + (bet / 2));
             }
+            sjekkHighscore(gevinst, MainActivity.getPrefs().getInt("UserID", 0) + "");
         } else if (vinn == 1)
             log.append("\n You lost!");
         else {
-            penger += bet;
+            gevinst = bet;
             log.append("\n It's a tie!");
         }
-        saldo.setText("Saldo: " + penger + " kr");
+
+        updateSaldo(gevinst);
         dealerInfo.setText("Poeng: " + dealer.sjekkPoeng());
         updateButtons();
-        MainActivity.setSaldo(penger);
+    }
+
+    private void sjekkHighscore(int gevinst, String userID) {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Log.e("gh", response);
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        int highscore = jsonResponse.getInt("highscore");
+                        Toast.makeText(Blackjack.this, "Du har en ny highscore: " + highscore, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (jsonResponse.getString("type").equals("ingen endring")) {
+                            return;
+                        }
+                        String error = jsonResponse.getString("error");
+                        Toast.makeText(Blackjack.this, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Log.e("hei ", userID + gevinst + "" + "Blackjack");
+        InsertHighscoreRequest insertHighscoreRequest = new InsertHighscoreRequest(userID, gevinst + "", "Blackjack", responseListener, null);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(insertHighscoreRequest);
     }
 
     //Kjøres når en av bet knappene trykkes
     public void bet(View view) {
-            int innsats = Integer.parseInt(view.getTag().toString());
-            if (!isBetting) return;
-            if (penger < innsats){
-                // Oppdatere tekst med for lite saldo
-                return;
-            }
-            bet += innsats;
-            penger -= innsats;
-            log.append("\n You bet " + innsats + " kr");
-            saldo.setText("Saldo: " + penger + " kr");
+        int innsats = Integer.parseInt(view.getTag().toString());
+        if (!isBetting) return;
+        if (penger < innsats) {
+            // Oppdatere tekst med for lite saldoText
+            return;
+        }
+        bet += innsats;
+        updateSaldo(-innsats);
+        log.append("\n You bet " + innsats + " kr");
     }
 
     // Kjøres ved doubledown knappen
-    public void doubleDown(View view){
+    public void doubleDown(View view) {
         if (slutt) return;
         if (bet > penger) return;
         if (spiller.hånd.size() != 2) return;
-        penger -= bet;
-        bet = bet*2;
+        updateSaldo(-bet);
+        bet = bet * 2;
         hit.performClick();
         stand.performClick();
     }
 
     // Dealeren sin runde
-    private void dealeren(boolean blackjack){
+    private void dealeren(boolean blackjack) {
         // Snur dealeren sine kort
         dealerKort.removeAllViews();
-        for (int i=0; i<dealer.hånd.size(); i++)
+        for (int i = 0; i < dealer.hånd.size(); i++)
             cardGraphics(dealer.hånd.get(i).getNavn(), true);
 
         // Dealeren spiller nye kort
@@ -256,7 +297,7 @@ public class Blackjack extends AppCompatActivity {
     }
 
     // Resetter views og kort
-    private void removeViews(){
+    private void removeViews() {
         bilder.clear();
         spillerKort.removeAllViews();
         dealerKort.removeAllViews();
@@ -264,8 +305,8 @@ public class Blackjack extends AppCompatActivity {
 
 
     // Oppdaterer transpancy på knappene
-    private void updateButtons(){
-        if (!slutt){
+    private void updateButtons() {
+        if (!slutt) {
             start.getBackground().setAlpha(100);
             bet5.getBackground().setAlpha(100);
             bet25.getBackground().setAlpha(100);
@@ -276,8 +317,7 @@ public class Blackjack extends AppCompatActivity {
                 doubledown.getBackground().setAlpha(255);
             else
                 doubledown.getBackground().setAlpha(100);
-        }
-        else if (slutt && isBetting){
+        } else if (slutt && isBetting) {
             start.getBackground().setAlpha(255);
             bet5.getBackground().setAlpha(255);
             bet25.getBackground().setAlpha(255);
@@ -285,8 +325,7 @@ public class Blackjack extends AppCompatActivity {
             hit.getBackground().setAlpha(100);
             stand.getBackground().setAlpha(100);
             doubledown.getBackground().setAlpha(100);
-        }
-        else {
+        } else {
             start.getBackground().setAlpha(100);
             bet5.getBackground().setAlpha(100);
             bet25.getBackground().setAlpha(100);
@@ -295,5 +334,37 @@ public class Blackjack extends AppCompatActivity {
             stand.getBackground().setAlpha(100);
             doubledown.getBackground().setAlpha(100);
         }
+    }
+
+    public void updateSaldo(int sum) {
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        int saldo = jsonResponse.getInt("saldo");
+                        SharedPreferences.Editor editor = Blackjack.this.getSharedPreferences("MyPrefsName", Context.MODE_PRIVATE).edit();
+                        editor.putInt("Saldo", saldo);
+                        editor.apply();
+                        MainActivity.updateSaldo();
+                        penger = saldo;
+                        saldoText.setText("Balance: " + penger);
+                    } else {
+                        String error = jsonResponse.getString("error");
+                        Toast.makeText(Blackjack.this, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        SharedPreferences prefs = MainActivity.getPrefs();
+        String userId = prefs.getInt("UserID", 0) + "";
+        SaldoRequest saldoRequest = new SaldoRequest(userId, sum + "", responseListener, null);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(saldoRequest);
     }
 }

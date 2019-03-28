@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -15,9 +16,11 @@ import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.dnelv.casino.InsertHighscoreRequest;
 import com.example.dnelv.casino.MainActivity;
 import com.example.dnelv.casino.R;
 import com.example.dnelv.casino.SaldoRequest;
+import com.example.dnelv.casino.blackjack.Blackjack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,10 +81,44 @@ public class Spilleautomat extends AppCompatActivity {
             @Override
             public void run() {
                 updateSaldo(sc.result());
+                sjekkHighscore(sc.result(),MainActivity.getPrefs().getInt("UserID", 0) + "");
             }
         };
         Timer timer = new Timer();
         timer.schedule(task, 3100);
+    }
+
+    private void sjekkHighscore(int gevinst, String userID) {
+        if(gevinst == 0){
+            return;
+        }
+        Response.Listener<String> responseListener = new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    Log.e("gh", response);
+                    JSONObject jsonResponse = new JSONObject(response);
+                    boolean success = jsonResponse.getBoolean("success");
+                    if (success) {
+                        int highscore = jsonResponse.getInt("highscore");
+                        Toast.makeText(Spilleautomat.this, "Du har en ny highscore: " + highscore, Toast.LENGTH_SHORT).show();
+                    } else {
+                        if (jsonResponse.getString("type").equals("ingen endring")) {
+                            return;
+                        }
+                        String error = jsonResponse.getString("error");
+                        Toast.makeText(Spilleautomat.this, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        Log.e("hei ", userID + gevinst + "" + "Spilleautomat");
+        InsertHighscoreRequest insertHighscoreRequest = new InsertHighscoreRequest(userID, gevinst + "", "Spilleautomat", responseListener, null);
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(insertHighscoreRequest);
     }
 
     public void updateSaldo(int sum) {
