@@ -17,6 +17,7 @@ public class Pop extends AppCompatActivity {
 
         TextView showText = findViewById(R.id.HighscoreText);
         TextView gameText = findViewById(R.id.gameText);
+        TextView userText = findViewById(R.id.userText);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -30,7 +31,8 @@ public class Pop extends AppCompatActivity {
         String game = getIntent().getStringExtra("Game");
         int score = getIntent().getIntExtra("Score", 0);
 
-        showText.setText(user + ": " + score);
+        userText.setText("Username: " + user);
+        showText.setText("Score: " + score);
         gameText.setText(game);
 
     }
