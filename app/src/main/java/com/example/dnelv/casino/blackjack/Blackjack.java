@@ -270,7 +270,6 @@ public class Blackjack extends AppCompatActivity {
         if (slutt) return;
         if (bet > penger) return;
         if (spiller.hånd.size() != 2) return;
-        updateSaldo(-bet);
         bet = bet * 2;
         hit.performClick();
         stand.performClick();

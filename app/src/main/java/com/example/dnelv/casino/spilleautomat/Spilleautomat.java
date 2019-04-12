@@ -64,6 +64,7 @@ public class Spilleautomat extends AppCompatActivity {
 
     //Setter igang maskinen og trekker fra innsats
     public void spin(View view) {
+        rewardText.setText("");
         if (r10.isChecked()) {
             updateSaldo(-10);
             sc.spin(10);
@@ -80,8 +81,11 @@ public class Spilleautomat extends AppCompatActivity {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                updateSaldo(sc.result());
-                sjekkHighscore(sc.result(),MainActivity.getPrefs().getInt("UserID", 0) + "");
+                int gevinst = sc.result();
+                if(gevinst > 0) {
+                    updateSaldo(gevinst);
+                    sjekkHighscore(gevinst, MainActivity.getPrefs().getInt("UserID", 0) + "");
+                }
             }
         };
         Timer timer = new Timer();
@@ -89,15 +93,15 @@ public class Spilleautomat extends AppCompatActivity {
     }
 
     private void sjekkHighscore(int gevinst, String userID) {
-        if(gevinst == 0){
-            return;
-        }
+
         Response.Listener<String> responseListener = new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
                     Log.e("gh", response);
                     JSONObject jsonResponse = new JSONObject(response);
+                    int gevinst = jsonResponse.getInt("sum");
+                    rewardText.setText("Du vant: " + gevinst);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
                         int highscore = jsonResponse.getInt("highscore");

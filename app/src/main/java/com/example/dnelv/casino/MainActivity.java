@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import com.example.dnelv.casino.blackjack.Blackjack;
 import com.example.dnelv.casino.home.HomeFragment;
 import com.example.dnelv.casino.home.MyProfileFragment;
-import com.example.dnelv.casino.home.SettingsFragment;
 import com.example.dnelv.casino.login.LoginActivity;
 import com.example.dnelv.casino.spilleautomat.Spilleautomat;
 
@@ -103,9 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_myProfile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MyProfileFragment()).commit();
-                break;
-            case R.id.nav_settings:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 break;
             case R.id.nav_highscore:
                 Intent highscoreIntent = new Intent(this, HighscoreActivity.class);
